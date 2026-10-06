@@ -55,16 +55,40 @@ limitations under the License.
 
 <div align="center">
 
-### Industry & Academic Partners
+  <h3>Partners & Contributors</h3>
+  <p>
+    <a href="https://bopen.eu" target="_blank">
+      <img src="assets/bopen_logo.png" alt="B-Open" height="45" style="margin: 0 12px;"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.delta-phi.eu/" target="_blank">
+      <img src="assets/deltaphi_logo.png" alt="DeltaPhi" height="45" style="margin: 0 12px;"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.ua.es/en/" target="_blank">
+      <img src="assets/ua_logo.png" alt="University of Alicante" height="45" style="margin: 0 12px;"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.tudelft.nl/en/" target="_blank">
+      <img src="assets/tudelft_logo.png" alt="TU Delft" height="45" style="margin: 0 12px;"/>
+    </a>
+  </p>
 
-| <a href="https://bopen.eu"><img src="assets/bopen_logo.png" width="110"><br>**B-Open**</a> | <a href="https://www.delta-phi.eu/"><img src="assets/deltaphi_logo.png" width="110"><br>**DeltaPhi**</a> | <a href="https://www.ua.es/en/"><img src="assets/ua_logo.png" width="110"><br>**University of Alicante**</a> | <a href="https://www.tudelft.nl/en/"><img src="assets/tudelft_logo.png" width="110"><br>**TU Delft**</a> |
-| :---: | :---: | :---: | :---: |
+  <h3>Space Agencies</h3>
+  <p>
+    <a href="https://www.esa.int/" target="_blank">
+      <img src="assets/esa_logo.png" alt="ESA" height="55" style="margin: 0 15px;"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.argentina.gob.ar/conae" target="_blank">
+      <img src="assets/conae_logo.png" alt="CONAE" height="55" style="margin: 0 15px;"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.asi.it/" target="_blank">
+      <img src="assets/asi_logo.png" alt="ASI" height="55" style="margin: 0 15px;"/>
+    </a>
+  </p>
 
-<br/>
-
-### Space Agencies
-
-| <a href="https://www.esa.int/"><img src="assets/esa_logo.png" width="120"><br>**ESA**</a> | <a href="https://www.argentina.gob.ar/conae"><img src="assets/conae_logo.png" width="120"><br>**CONAE**</a> | <a href="https://www.asi.it/"><img src="assets/asi_logo.png" width="120"><br>**ASI**</a> |
-| :---: | :---: | :---: |
+  <br/>
 
 </div>
