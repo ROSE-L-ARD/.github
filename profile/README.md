@@ -31,7 +31,7 @@ The project is organised as three layered Python packages:
 | --- | --- |
 | [`cop-ard-core`](https://github.com/ROSE-L-ARD/cop-ard-core) | Core SAR processing algorithms: SLC I/O, orbit and geometry computation, image matching, ESD, split-spectrum processing, DEM handling, ionospheric estimation, phase unwrapping, warping and resampling kernels (NumPy/SciPy/Numba over Xarray/Dask) |
 | [`cop-ard-app`](https://github.com/ROSE-L-ARD/cop-ard-app) | Application layer on top of `cop-ard-core`: mission readers (Sentinel-1 SAFE,  ROSE-L, based on [`sarpy`](https://github.com/ngageoint/sarpy)), co-registration workflow, interferogram generation, CMLP/GMLP building blocks, distributed computation |
-| [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) | Operational pipeline on the [EOPF](https://eopf.readthedocs.io/) framework: processing units (`ingestion`, `coregistration`, `geocoding`, `reference_dem`, `reference_geometry`, `reference_update`, `cmlp`), preflight validation, EOPF model contracts, system verification tests, Docker/Dask deployment |
+| [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) | Operational pipeline on the [EOPF](https://cpm.pages.eopf.copernicus.eu/eopf-cpm) framework: processing units (`ingestion`, `coregistration`, `geocoding`, `reference_dem`, `reference_geometry`, `reference_update`, `cmlp`), preflight validation, EOPF model contracts, system verification tests, Docker/Dask deployment |
 
 Dependency direction: `cop-ard-processor` → `cop-ard-app` → `cop-ard-core`. All packages require Python 3.13 (`>=3.13, <3.14`) and are managed with [`uv`](https://docs.astral.sh/uv/) (`pyproject.toml` + pinned `uv.lock`).
 
@@ -44,7 +44,7 @@ Dependency direction: `cop-ard-processor` → `cop-ard-app` → `cop-ard-core`. 
 - Distributed processing capabilities
 - Scalable SAR data management and analysis
 - Support for advanced multi-temporal SAR processing workflows
-- Execution as an [EOPF](https://eopf.readthedocs.io/) application on local and Dask-cluster backends
+- Execution as an [EOPF](https://cpm.pages.eopf.copernicus.eu/eopf-cpm) application on local and Dask-cluster backends
 
 ---
 
@@ -72,7 +72,7 @@ GMLP is intended to simplify access to interferometric measurements, which are t
 - Minimizes long-term phase drifts related to vegetation effects
 - Significantly reduces storage requirements compared to a full CSLC stack
 
-The product is initially generated in radar coordinates on a subset of the original SLC grid. This intermediate product is referred to as **CMLP** (*Co-registered Multi-Looked Complex*). After geocoding, the final product is delivered as **GMLP**.
+The product is initially generated in radar coordinates on a subset of the original SLC grid. This intermediate product is referred to as **CMLP** (*Co-registered Multi-Looked Phase*). After geocoding, the final product is delivered as **GMLP**.
 
 Several approaches have been proposed in the literature for generating this type of product. The solution adopted by this processor has the following characteristics:
 
