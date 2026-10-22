@@ -1,7 +1,8 @@
 # ROSE-L-ARD
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
-![Python](https://img.shields.io/badge/python-3.13+-blue)
+![Python](https://img.shields.io/badge/python-3.13-blue)
+![EOPF](https://img.shields.io/badge/EOPF-3.0%2B-blue)
 
 A prototype processor for Analysis-Ready Data (ARD) generation from Copernicus SAR missions:
 
@@ -22,14 +23,28 @@ This open-source project is funded by the [European Space Agency (ESA)](https://
 
 ---
 
+## Repositories
+
+The project is organised as three layered Python packages:
+
+| Repository | Contents |
+| --- | --- |
+| [`cop-ard-core`](https://github.com/ROSE-L-ARD/cop-ard-core) | Core SAR processing algorithms: SLC I/O, orbit and geometry computation, image matching, ESD, split-spectrum processing, DEM handling, ionospheric estimation, phase unwrapping, warping and resampling kernels (NumPy/SciPy/Numba over Xarray/Dask) |
+| [`cop-ard-app`](https://github.com/ROSE-L-ARD/cop-ard-app) | Application layer on top of `cop-ard-core`: mission readers (Sentinel-1 SAFE,  ROSE-L, based on [`sarpy`](https://github.com/ngageoint/sarpy)), co-registration workflow, interferogram generation, CMLP/GMLP building blocks, distributed computation |
+| [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) | Operational pipeline on the [EOPF](https://eopf.readthedocs.io/) framework: processing units (`ingestion`, `coregistration`, `geocoding`, `reference_dem`, `reference_geometry`, `reference_update`, `cmlp`), preflight validation, EOPF model contracts, system verification tests, Docker/Dask deployment |
+
+Dependency direction: `cop-ard-processor` → `cop-ard-app` → `cop-ard-core`. All packages require Python 3.13 (`>=3.13, <3.14`) and are managed with [`uv`](https://docs.astral.sh/uv/) (`pyproject.toml` + pinned `uv.lock`).
+
 ## Features
 
 - CSLC generation for time-series analysis and interferometric applications
 - GMLP generation for large-scale interferometric monitoring
+- Multi-looking with CMLP as the radar-coordinate intermediate product of the GMLP chain
 - Cloud-native architecture based on Xarray and Dask
 - Distributed processing capabilities
 - Scalable SAR data management and analysis
 - Support for advanced multi-temporal SAR processing workflows
+- Execution as an [EOPF](https://eopf.readthedocs.io/) application on local and Dask-cluster backends
 
 ---
 
@@ -69,30 +84,48 @@ Several approaches have been proposed in the literature for generating this type
 
 ## Installation
 
-```bash
-git clone https://github.com/ROSE-L-ARD/rose-l-ard.git
-cd rose-l-ard
-
-# Installation instructions
-...
-```
-
-## Test Installation
+The entry point for end users is the [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) repository:
 
 ```bash
-# Validation tests
-...
+git clone https://github.com/ROSE-L-ARD/cop-ard-processor.git
+cd cop-ard-processor
+make install
 ```
+
+`make install` is the supported installation path: it downloads the EGM2008 geoid grid required for geoid-corrected heights (PROJ/`pyproj`) and creates the local `.venv` from `pyproject.toml` and the pinned `uv.lock`. Prerequisites: [`uv`](https://docs.astral.sh/uv/) on `PATH` and network access; Python 3.13 (`>=3.13, <3.14`) is provisioned automatically by `uv`. Running `uv sync` alone is **not** sufficient: it skips the PROJ grid setup and geoid-dependent processing fails at runtime.
+
+## Testing
+
+Unit and integration tests run locally with `pytest`:
+
+```bash
+uv run --extra tests pytest tests/
+```
+
+End-to-end and System Verification Tests (`tests/vt/`) are **not** intended for CI/CD pipelines: they require heavy resource, storage and execution constraints and must be executed on the CEMPAL infrastructure (or an equivalent dedicated processing environment). Within a test case, `REFERENCE.py` must run **first** to build the reference database, then the date-named acquisition scripts in strict chronological order. `scripts/run_tests.sh <TC-ID>` enforces this ordering automatically and stages the trigger datasets from S3:
+
+```bash
+bash scripts/run_tests.sh TC-ST-FUNC-003                  # REFERENCE first, then all acquisitions
+bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference # reuse the existing reference database
+```
+
+---
+
+## Development
+
+Quality gates are driven by the `makefile` of `cop-ard-processor`: `make all` formats the code and runs `make check` (`ruff` lint, `bandit` security, `xenon` complexity, `mypy` type checking). `make docs` renders the CSLC, ESD and geolocation qualification notebooks (Quarto) into `docs/`. Dependencies are pinned in `uv.lock`; refresh a dependency (e.g. `cop-ard-app`) with `uv lock -P cop-ard-app` followed by `uv sync --extra tests`.
+
+## Deployment
+
+`Dockerfile` is a two-stage build (a `uv` builder stage, then a `python:3.13-slim` runtime stage) producing a self-contained image with the pinned environment and the PROJ geoid grid:
 
 ---
 
 ## Contributing
 
-The main repository is hosted on GitHub:
+The source is hosted on GitHub: **https://github.com/ROSE-L-ARD**, organised in the three repositories listed in the [Repositories](#repositories) section.
 
-**https://github.com/ROSE-L-ARD**
-
-Bug reports, feature requests, testing activities, and code contributions are highly appreciated.
+Bug reports, feature requests, testing activities, and code contributions are highly appreciated in the issue trackers of each repository.
 
 ### Lead Developer
 
@@ -100,12 +133,14 @@ Bug reports, feature requests, testing activities, and code contributions are hi
 
 ### Main Contributors
 
-- [Francesco Vecchioli](https://github.com/) - [B-Open](https://bopen.eu)
+- [Tommaso Carletti](https://github.com/Sbyner) - [B-Open](https://bopen.eu)
+- [Alessio Morea](https://github.com/AlessioMorea) - [B-Open](https://bopen.eu)
+- [Francesco Vecchioli](https://github.com/francesco-vecchioli) - [B-Open](https://bopen.eu)
 - [Francesco DeZan](https://github.com/fdz-insar) – [DeltaPhi](https://www.delta-phi.eu/)
 - [Juan M. Lopez-Sanchez](https://github.com/juanma-lopez) – [University of Alicante](https://www.ua.es/en/)
 - [Paco López-Dekker](https://github.com/pakodekker) – [TU Delft](https://www.tudelft.nl/en/)
 
-ect contributors in the GitHub repository.
+More contributors are listed in the GitHub repositories and their commit history.
 
 ---
 
@@ -147,40 +182,42 @@ limitations under the License.
 
 <div align="center">
 
-  <h3>Partners & Contributors</h3>
-  <p>
-    <a href="https://bopen.eu" target="_blank">
-      <img alt="B-Open" src="https://github.com/user-attachments/assets/a562411b-53f9-4f8e-9133-eda0dfd3ba7c" height="45" style="margin: 0 15px;"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.delta-phi.eu/" target="_blank">
-      <img alt="DeltaPhi" src="https://github.com/user-attachments/assets/c8c5b1f6-3c28-44d4-9927-2616c38b266d" height="45" style="margin: 0 15px;"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.ua.es/en/" target="_blank">
-      <img alt="University of Alicante" src="https://github.com/user-attachments/assets/fa266aa7-909a-4b35-9374-441533e7366a" height="45" style="margin: 0 15px;"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.tudelft.nl/en/" target="_blank">
-      <img alt="TU Delft" src="https://github.com/user-attachments/assets/3b50bda1-8726-4602-8be3-f833c0c38dfe" height="45" style="margin: 0 15px;"/>
-    </a>
-  </p>
+  <img src="https://img.shields.io/badge/Partners_%26_Contributors-100000?style=for-the-badge&logoColor=white" alt="Partners & Contributors" />
 
-  <h3>Space Agencies</h3>
-  <p>
-    <a href="https://www.esa.int/" target="_blank">
-      <img alt="ESA" src="https://github.com/user-attachments/assets/29b559a8-46b8-420e-9638-d66ad5c91cdb" height="45" style="margin: 0 15px;"/>
+  <p align="center">
+    <a href="https://bopen.eu" target="_blank">
+      <img alt="B-Open" src="https://github.com/user-attachments/assets/a562411b-53f9-4f8e-9133-eda0dfd3ba7c" height="40" valign="middle"/>
     </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.argentina.gob.ar/conae" target="_blank">
-      <img src="https://github.com/user-attachments/assets/bf303750-ecef-43ed-b28c-661a1e9c80bf" alt="CONAE" height="55" style="margin: 0 15px;"/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.delta-phi.eu/" target="_blank">
+      <img alt="DeltaPhi" src="https://github.com/user-attachments/assets/c8c5b1f6-3c28-44d4-9927-2616c38b266d" height="40" valign="middle"/>
     </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.asi.it/" target="_blank">
-      <img src="https://github.com/user-attachments/assets/876c7892-5d84-4820-9b86-161ea387744d" alt="ASI" height="55" style="margin: 0 15px;"/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.ua.es/en/" target="_blank">
+      <img alt="University of Alicante" src="https://github.com/user-attachments/assets/fa266aa7-909a-4b35-9374-441533e7366a" height="40" valign="middle"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.tudelft.nl/en/" target="_blank">
+      <img alt="TU Delft" src="https://github.com/user-attachments/assets/3b50bda1-8726-4602-8be3-f833c0c38dfe" height="40" valign="middle"/>
     </a>
   </p>
 
   <br/>
+
+  <img src="https://img.shields.io/badge/Space_Agencies-002B49?style=for-the-badge&logoColor=white" alt="Space Agencies" />
+
+  <p align="center">
+    <a href="https://www.esa.int/" target="_blank">
+      <img alt="ESA" src="https://github.com/user-attachments/assets/29b559a8-46b8-420e-9638-d66ad5c91cdb" height="48" valign="middle"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.argentina.gob.ar/conae" target="_blank">
+      <img alt="CONAE" src="https://github.com/user-attachments/assets/bf303750-ecef-43ed-b28c-661a1e9c80bf" height="48" valign="middle"/>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.asi.it/" target="_blank">
+      <img alt="ASI" src="https://github.com/user-attachments/assets/876c7892-5d84-4820-9b86-161ea387744d" height="48" valign="middle"/>
+    </a>
+  </p>
 
 </div>
