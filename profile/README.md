@@ -1,90 +1,113 @@
-# ROSE-L-ARD
+# 🛰️ ROSE-L-ARD
 
-![License](https://img.shields.io/badge/license-Apache%202.0-blue)
-![Python](https://img.shields.io/badge/python-3.13-blue)
-![EOPF](https://img.shields.io/badge/EOPF-3.0%2B-blue)
+**Cloud-Native Analysis-Ready Data (ARD) Processor for Copernicus SAR Missions**
 
-A prototype processor for Analysis-Ready Data (ARD) generation from Copernicus SAR missions:
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](LICENSE)
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-3776AB.svg?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![EOPF 3.0+](https://img.shields.io/badge/EOPF-3.0%2B-005A9C.svg?style=flat-square)](https://eopf.readthedocs.io/)
+[![Package Manager: uv](https://img.shields.io/badge/Package_Manager-uv-DE5FE9.svg?style=flat-square&logo=astral&logoColor=white)](https://docs.astral.sh/uv/)
+[![Engine: Xarray & Dask](https://img.shields.io/badge/Distributed-Xarray_%7C_Dask-F37626.svg?style=flat-square&logo=dask&logoColor=white)](https://dask.org)
+[![Funded by ESA](https://img.shields.io/badge/Funded_by-ESA-003247.svg?style=flat-square)](https://www.esa.int/)
 
-- Coregistered Single-Look Complex (CSLC)
-- Geocoded Multi-Looked Phase (GMLP)
-
-The processor implements advanced SAR processing algorithms, including:
-
-- Model-based co-registration
-- Image matching
-- Enhanced Spectral Diversity (ESD)
-- Split-Spectrum processing
-- Multi-interferogram combination
-
-The processor enables cloud-native SAR processing through [Xarray](https://xarray.pydata.org) and [Dask](https://dask.org).
-
-This open-source project is funded by the [European Space Agency (ESA)](https://www.esa.int/) under the *Prototype Processor for ARD of Copernicus SAR Missions* project.
+<p align="center">
+  <a href="#-processing-workflows">Workflows</a> •
+  <a href="#-repositories">Repositories</a> •
+  <a href="#-products">Products</a> •
+  <a href="#-quickstart">Quickstart</a> •
+  <a href="#-testing--verification">Testing</a> •
+  <a href="#-consortium--contributors">Consortium</a>
+</p>
 
 ---
 
-## Repositories
+A prototype processing pipeline for generating standardized **Analysis-Ready Data (ARD)** from Copernicus SAR missions (**Sentinel-1** and **ROSE-L**). 
 
-The project is organised as three layered Python packages:
-
-| Repository | Contents |
-| --- | --- |
-| [`cop-ard-core`](https://github.com/ROSE-L-ARD/cop-ard-core) | Core SAR processing algorithms: SLC I/O, orbit and geometry computation, image matching, ESD, split-spectrum processing, DEM handling, ionospheric estimation, phase unwrapping, warping and resampling kernels (NumPy/SciPy/Numba over Xarray/Dask) |
-| [`cop-ard-app`](https://github.com/ROSE-L-ARD/cop-ard-app) | Application layer on top of `cop-ard-core`: mission readers (Sentinel-1 SAFE,  ROSE-L, based on [`sarpy`](https://github.com/ngageoint/sarpy)), co-registration workflow, interferogram generation, CMLP/GMLP building blocks, distributed computation |
-| [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) | Operational pipeline on the [EOPF](https://cpm.pages.eopf.copernicus.eu/eopf-cpm) framework: processing units (`ingestion`, `coregistration`, `geocoding`, `reference_dem`, `reference_geometry`, `reference_update`, `cmlp`), preflight validation, EOPF model contracts, system verification tests, Docker/Dask deployment |
-
-Dependency direction: `cop-ard-processor` → `cop-ard-app` → `cop-ard-core`. All packages require Python 3.13 (`>=3.13, <3.14`) and are managed with [`uv`](https://docs.astral.sh/uv/) (`pyproject.toml` + pinned `uv.lock`).
-
-## Features
-
-- CSLC generation for time-series analysis and interferometric applications
-- GMLP generation for large-scale interferometric monitoring
-- Multi-looking with CMLP as the radar-coordinate intermediate product of the GMLP chain
-- Cloud-native architecture based on Xarray and Dask
-- Distributed processing capabilities
-- Scalable SAR data management and analysis
-- Support for advanced multi-temporal SAR processing workflows
-- Execution as an [EOPF](https://cpm.pages.eopf.copernicus.eu/eopf-cpm) application on local and Dask-cluster backends
+The processor leverages **Xarray** and **Dask** for distributed, cloud-native high-throughput computation, adhering to the European Space Agency’s **EOPF** (Earth Observation Processing Framework) operational architecture.
 
 ---
 
-## CSLC
+## 🏛️ Consortium & Institutional Backing
 
-Image co-registration aligns two or more images so that each pixel corresponds to the same point on the ground, potentially achieving sub-pixel accuracy. This step is fundamental for generating multidimensional image stacks and enabling advanced time-series analysis.
+Funded by the **European Space Agency (ESA)** under the *Prototype Processor for ARD of Copernicus SAR Missions* project, with L-band SAOCOM data provided by **CONAE** and **ASI**.
 
-SAR interferometry, particularly multi-interferogram techniques such as Persistent Scatterer Interferometry (PSI), Small Baseline Subset (SBAS), and Distributed Scatterer (DS) approaches, represents one of the primary applications of co-registered images.
+<div align="center">
 
-The consistent availability of freely accessible global acquisitions from Sentinel-1, together with upcoming missions such as NISAR and ROSE-L, offers significant opportunities to expand the adoption of advanced interferometric techniques.
+#### Prime Contractor & Software Engineering
+[<img src="https://github.com/user-attachments/assets/a562411b-53f9-4f8e-9133-eda0dfd3ba7c" height="36" alt="B-Open"/>](https://bopen.eu)
 
-To achieve this objective, it is essential to address mission-specific challenges related to SAR acquisition modes while maximizing independence from acquisition geometry. Advanced processing techniques are employed to mitigate artifacts and provide high-quality products to end users.
+<br/>
 
----
+#### Scientific & Consortium Partners
+| [<img src="https://github.com/user-attachments/assets/c8c5b1f6-3c28-44d4-9927-2616c38b266d" height="32" alt="DeltaPhi"/>](https://www.delta-phi.eu/) | [<img src="https://github.com/user-attachments/assets/fa266aa7-909a-4b35-9374-441533e7366a" height="34" alt="University of Alicante"/>](https://www.ua.es/en/) | [<img src="https://github.com/user-attachments/assets/3b50bda1-8726-4602-8be3-f833c0c38dfe" height="28" alt="TU Delft"/>](https://www.tudelft.nl/en/) |
+| :---: | :---: | :---: |
 
-## GMLP
+<br/>
 
-The Geocoded Multi-Looked Phase (GMLP) product is a multi-looked ARD product designed for large-scale interferometric applications.
+#### Institutional Support & Data Providers
+| [<img src="https://github.com/user-attachments/assets/29b559a8-46b8-420e-9638-d66ad5c91cdb" height="42" alt="ESA"/>](https://www.esa.int/) | [<img src="https://github.com/user-attachments/assets/bf303750-ecef-43ed-b28c-661a1e9c80bf" height="42" alt="CONAE"/>](https://www.argentina.gob.ar/conae) | [<img src="https://github.com/user-attachments/assets/876c7892-5d84-4820-9b86-161ea387744d" height="42" alt="ASI"/>](https://www.asi.it/) |
+| :---: | :---: | :---: |
 
-The product is inspired by intermediate products commonly generated within PS/DS and SBAS processing chains before phase unwrapping (Guarnieri & Tebaldini, 2008; Ansari et al., 2017; Fornaro et al., 2015; Pepe, 2019).
-
-GMLP is intended to simplify access to interferometric measurements, which are traditionally difficult to exploit directly. Compared to full-resolution interferograms, the product:
-
-- Provides reduced phase noise through multi-looking
-- Minimizes long-term phase drifts related to vegetation effects
-- Significantly reduces storage requirements compared to a full CSLC stack
-
-The product is initially generated in radar coordinates on a subset of the original SLC grid. This intermediate product is referred to as **CMLP** (*Co-registered Multi-Looked Phase*). After geocoding, the final product is delivered as **GMLP**.
-
-Several approaches have been proposed in the literature for generating this type of product. The solution adopted by this processor has the following characteristics:
-
-- Enables continuous product updates as new acquisitions become available
-- Incorporates long-term phase drift correction
-- Minimizes computational and I/O requirements
+</div>
 
 ---
 
-## Installation
 
-The entry point for end users is the [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) repository:
+
+## 🔄 Processing Workflows
+
+The processor supports two execution pipelines depending on downstream analytical requirements:
+
+
+1. **CSLC Pipeline (Coregistration Only):** Aligns images at sub-pixel accuracy to a reference geometry. The workflow completes directly after co-registration, providing full-resolution complex stacks optimized for phase-sensitive techniques (PSI, SBAS, DS).
+2. **GMLP Pipeline (Coregistration + Multi-looking + Geocoding):** Ingests the co-registered data, compresses phase noise and volume via multi-looking into an intermediate radar-coordinate **CMLP** product, mitigates phase drifts, and geocodes the result into ready-to-use **GMLP**.
+
+<p align="center">
+  <img src="./assets/processing_workflows.svg" alt="COP-ARD Processing Workflows DAG" width="700">
+</p>
+
+* Auxiliary Data Files plug into the DAG per unit: `Ingestion` applies the ETAD and ORBIT ADFs (exact timing and precise-orbit corrections), `ReferenceDEM` consumes the DEM ADF, and `Coregistration` optionally takes the IONO ADF for ionospheric correction.
+
+* Every unit call passes through the layer-1 `preflight()` engine (violations raised as `PreflightError` with the full list) and runs under a `resumable_breakpoint()` decorator (`breakpoints__activate_all` config switch), so an interrupted chain resumes per-unit.
+* `ReferenceUpdate` keeps the dynamic REFDB current after CSLC-only chains; after multi-looking, `CMLP` itself returns `current_reference` / `stable_references` and persists the updates.
+
+---
+
+## 📦 Repositories
+
+The system is organized into three layered Python packages:
+
+| Layer | Repository | Responsibilities |
+| --- | --- | --- |
+| **Operational** | [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) | EOPF processing units (`ingestion`, `coregistration`, `geocoding`, `reference_dem`, `reference_geometry`, `reference_update`, `cmlp`), preflight validation, system verification tests, and Docker/Dask deployment targets. |
+| **Application** | [`cop-ard-app`](https://github.com/ROSE-L-ARD/cop-ard-app) | Mission readers (Sentinel-1 SAFE, ROSE-L via [`sarpy`](https://github.com/ngageoint/sarpy)), coregistration workflow orchestration, interferogram generation, CMLP/GMLP pipeline assembling. |
+| **Core** | [`cop-ard-core`](https://github.com/ROSE-L-ARD/cop-ard-core) | Low-level SAR numerical kernels: Orbit & geometry computation, image matching, ESD, split-spectrum processing, DEM handling, ionospheric estimation, and warping/resampling (NumPy / SciPy / Numba over Xarray/Dask). |
+
+**Dependency flow:** `cop-ard-processor` → `cop-ard-app` → `cop-ard-core`
+
+All packages require **Python 3.13** (`>=3.13, <3.14`) and are managed with [`uv`](https://docs.astral.sh/uv/) (`pyproject.toml` + pinned `uv.lock`).
+
+---
+
+## 🔬 Products
+
+Image co-registration aligns multiple acquisitions so each pixel corresponds to the exact same ground target at sub-pixel accuracy.
+
+* Fundamental baseline for multidimensional image stacks and multi-temporal SAR interferometry (PSI, SBAS, DS).
+* Minimizes mission-specific geometric distortions across Sentinel-1, ROSE-L, and NISAR.
+* Mitigates phase errors through integrated Enhanced Spectral Diversity (ESD) and Split-Spectrum ionospheric correction.
+
+An ARD product optimized for large-scale interferometric monitoring, inspired by intermediate stages in PS/DS and SBAS processing chains before phase unwrapping.
+
+* **Reduced Noise & Footprint:** Multi-looking suppresses speckle/phase noise and dramatically reduces data storage compared to full CSLC stacks.
+* **Vegetation Drift Correction:** Incorporates correction methods to minimize long-term phase drifts caused by vegetative dynamics.
+* **Continuous Ingestion:** Designed to support sequential updates as new acquisitions arrive.
+* **Intermediate CMLP:** Generated first in radar coordinates on a subset of the original SLC grid (**CMLP**), then geocoded to standard map coordinates (**GMLP**).
+
+---
+
+## 🚀 Quickstart
+
+The entry point for end users is the [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) repository.
 
 ```bash
 git clone https://github.com/ROSE-L-ARD/cop-ard-processor.git
@@ -92,64 +115,70 @@ cd cop-ard-processor
 make install
 ```
 
-`make install` is the supported installation path: it downloads the EGM2008 geoid grid required for geoid-corrected heights (PROJ/`pyproj`) and creates the local `.venv` from `pyproject.toml` and the pinned `uv.lock`. Prerequisites: [`uv`](https://docs.astral.sh/uv/) on `PATH` and network access; Python 3.13 (`>=3.13, <3.14`) is provisioned automatically by `uv`. Running `uv sync` alone is **not** sufficient: it skips the PROJ grid setup and geoid-dependent processing fails at runtime.
+`make install` is the **only supported installation path**. It downloads the **EGM2008 geoid grid** required for geoid-corrected vertical datums (`PROJ` / `pyproj`) and builds the local virtual environment. Running `uv sync` alone will bypass grid setup, causing geoid-dependent processing to fail at runtime.
 
-## Testing
+---
 
-Unit and integration tests run locally with `pytest`:
+## 🧪 Testing & Verification
+
+### Unit & Integration Tests
+
+Local test suites run with `pytest`:
 
 ```bash
 uv run --extra tests pytest tests/
 ```
 
-End-to-end and System Verification Tests (`tests/vt/`) are **not** intended for CI/CD pipelines: they require heavy resource, storage and execution constraints and must be executed on the CEMPAL infrastructure (or an equivalent dedicated processing environment). Within a test case, `REFERENCE.py` must run **first** to build the reference database, then the date-named acquisition scripts in strict chronological order. `scripts/run_tests.sh <TC-ID>` enforces this ordering automatically and stages the trigger datasets from S3:
+### System Verification Tests (SVT)
+
+End-to-end SVTs (`tests/vt/`) validate full operational chains against S3 trigger data. Because of high storage and compute requirements, SVTs must be executed on a dedicated HPC environment (e.g., CEMPAL).
+
+Test cases must run `REFERENCE.py` first to construct the reference baseline, followed chronologically by acquisition dates:
 
 ```bash
-bash scripts/run_tests.sh TC-ST-FUNC-003                  # REFERENCE first, then all acquisitions
-bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference # reuse the existing reference database
+# Order enforced automatically; stages S3 trigger data
+bash scripts/run_tests.sh TC-ST-FUNC-003
+
+# Reuse existing reference database
+bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 ```
 
 ---
 
-## Development
+## 🛠️ Development & Deployment
 
-Quality gates are driven by the `makefile` of `cop-ard-processor`: `make all` formats the code and runs `make check` (`ruff` lint, `bandit` security, `xenon` complexity, `mypy` type checking). `make docs` renders the CSLC, ESD and geolocation qualification notebooks (Quarto) into `docs/`. Dependencies are pinned in `uv.lock`; refresh a dependency (e.g. `cop-ard-app`) with `uv lock -P cop-ard-app` followed by `uv sync --extra tests`.
-
-## Deployment
-
-`Dockerfile` is a two-stage build (a `uv` builder stage, then a `python:3.13-slim` runtime stage) producing a self-contained image with the pinned environment and the PROJ geoid grid:
-
----
-
-## Contributing
-
-The source is hosted on GitHub: **https://github.com/ROSE-L-ARD**, organised in the three repositories listed in the [Repositories](#repositories) section.
-
-Bug reports, feature requests, testing activities, and code contributions are highly appreciated in the issue trackers of each repository.
-
-### Lead Developer
-
-- [Federico Minati](https://github.com/effeminati) – [B-Open](https://bopen.eu)
-
-### Main Contributors
-
-- [Tommaso Carletti](https://github.com/Sbyner) - [B-Open](https://bopen.eu)
-- [Alessio Morea](https://github.com/AlessioMorea) - [B-Open](https://bopen.eu)
-- [Francesco Vecchioli](https://github.com/francesco-vecchioli) - [B-Open](https://bopen.eu)
-- [Francesco DeZan](https://github.com/fdz-insar) – [DeltaPhi](https://www.delta-phi.eu/)
-- [Juan M. Lopez-Sanchez](https://github.com/juanma-lopez) – [University of Alicante](https://www.ua.es/en/)
-- [Paco López-Dekker](https://github.com/pakodekker) – [TU Delft](https://www.tudelft.nl/en/)
-
-More contributors are listed in the GitHub repositories and their commit history.
+* **Code Standards:** `make all` formats and runs `make check` (`ruff` lint, `bandit` security, `xenon` complexity, `mypy` typing).
+* **Documentation:** `make docs` renders CSLC, ESD, and geolocation qualification Quarto notebooks into `docs/`.
+* **Lockfile Management:** Refresh individual dependencies using `uv lock -P <package>` followed by `uv sync --extra tests`.
+* **Containerization:** The included `Dockerfile` uses a multi-stage layout (a `uv` build phase + minimal `python:3.13-slim` runtime image containing the pinned environment and EGM2008 geoid assets).
 
 ---
 
-## Acknowledgements
+## 👥 Consortium & Contributors
 
-We gratefully acknowledge the support of the following organizations:
+### Prime Contractor & Software Engineering
 
-- **European Space Agency (ESA)** for funding the project and contributing to its technical roadmap.
-- **Comisión Nacional de Actividades Espaciales (CONAE)** and **Agenzia Spaziale Italiana (ASI)** for providing L-band SAOCOM SAR data used during prototype development, analysis, and validation activities.
+**[B-Open](https://bopen.eu)** is the project prime contractor, lead software developer, and long-term maintainer of the ROSE-L-ARD processing suite.
+
+* **Federico Minati** ([@effeminati](https://github.com/effeminati)) — *Lead Developer*
+* **Tommaso Carletti** ([@Sbyner](https://github.com/Sbyner))
+* **Alessio Morea** ([@AlessioMorea](https://github.com/AlessioMorea))
+* **Francesco Vecchioli** ([@francesco-vecchioli](https://github.com/francesco-vecchioli))
+
+### Project Partners
+
+* **Francesco DeZan** ([@fdz-insar](https://github.com/fdz-insar)) — [DeltaPhi](https://www.delta-phi.eu/)
+* **Juan M. Lopez-Sanchez** ([@juanma-lopez](https://github.com/juanma-lopez)) — [University of Alicante](https://www.ua.es/en/)
+* **Paco López-Dekker** ([@pakodekker](https://github.com/pakodekker)) — [TU Delft](https://www.tudelft.nl/en/)
+* **Yan Yuan** ([@Yan-518](https://github.com/Yan-518)) — [TU Delft](https://www.tudelft.nl/en/)
+
+---
+
+## 🏛️ Institutional Backing & Data Access
+
+* **European Space Agency (ESA):** Funded under the *Prototype Processor for ARD of Copernicus SAR Missions* project.
+* **CONAE & ASI:** Provided L-band SAOCOM SAR data used during prototype development, analysis, and validation activities.
+* **Project Maintenance & Commercial Support:** Maintained long-term by [B-Open](https://bopen.eu). Sponsorships and commercial support inquiries are welcome.
 
 ---
 
@@ -179,45 +208,3 @@ limitations under the License.
 ```
 
 ---
-
-<div align="center">
-
-  <img src="https://img.shields.io/badge/Partners_%26_Contributors-100000?style=for-the-badge&logoColor=white" alt="Partners & Contributors" />
-
-  <p align="center">
-    <a href="https://bopen.eu" target="_blank">
-      <img alt="B-Open" src="https://github.com/user-attachments/assets/a562411b-53f9-4f8e-9133-eda0dfd3ba7c" height="40" valign="middle"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.delta-phi.eu/" target="_blank">
-      <img alt="DeltaPhi" src="https://github.com/user-attachments/assets/c8c5b1f6-3c28-44d4-9927-2616c38b266d" height="40" valign="middle"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.ua.es/en/" target="_blank">
-      <img alt="University of Alicante" src="https://github.com/user-attachments/assets/fa266aa7-909a-4b35-9374-441533e7366a" height="40" valign="middle"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.tudelft.nl/en/" target="_blank">
-      <img alt="TU Delft" src="https://github.com/user-attachments/assets/3b50bda1-8726-4602-8be3-f833c0c38dfe" height="40" valign="middle"/>
-    </a>
-  </p>
-
-  <br/>
-
-  <img src="https://img.shields.io/badge/Space_Agencies-002B49?style=for-the-badge&logoColor=white" alt="Space Agencies" />
-
-  <p align="center">
-    <a href="https://www.esa.int/" target="_blank">
-      <img alt="ESA" src="https://github.com/user-attachments/assets/29b559a8-46b8-420e-9638-d66ad5c91cdb" height="48" valign="middle"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.argentina.gob.ar/conae" target="_blank">
-      <img alt="CONAE" src="https://github.com/user-attachments/assets/bf303750-ecef-43ed-b28c-661a1e9c80bf" height="48" valign="middle"/>
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://www.asi.it/" target="_blank">
-      <img alt="ASI" src="https://github.com/user-attachments/assets/876c7892-5d84-4820-9b86-161ea387744d" height="48" valign="middle"/>
-    </a>
-  </p>
-
-</div>
