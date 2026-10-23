@@ -35,7 +35,11 @@ The processor supports two execution pipelines:
 2. **GMLP Pipeline (Coregistration + Multi-looking + Geocoding):** Ingests the co-registered data, compresses phase noise and volume via multi-looking into an intermediate radar-coordinate **CMLP** product, mitigates phase drifts, and geocodes the result into ready-to-use **GMLP**.
 
 <p align="center">
-  <img src="./assets/processing_workflows.svg" alt="COP-ARD Processing Workflows" width="700">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/processing-workflows-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="assets/processing-workflows-light.svg">
+    <img src="assets/processing-workflows-light.svg" alt="COP-ARD Processing Workflows" width="100%">
+  </picture>
 </p>
 
 * Auxiliary Data Files per unit: `Ingestion` applies the ETAD and ORBIT ADFs (exact timing and precise-orbit corrections), `ReferenceDEM` consumes the DEM ADF, and `Coregistration` optionally takes the IONO ADF for ionospheric correction.
@@ -46,11 +50,11 @@ The processor supports two execution pipelines:
 
 The system is organized into three Python packages:
 
-| Layer | Repository | Responsibilities |
-| --- | --- | --- |
-| **Operational** | [`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor) | EOPF processing units (`ingestion`, `coregistration`, `geocoding`, `reference_dem`, `reference_geometry`, `reference_update`, `cmlp`), preflight validation, system verification tests, and Docker/Dask deployment targets. |
-| **Application** | [`cop-ard-app`](https://github.com/ROSE-L-ARD/cop-ard-app) | Mission readers (Sentinel-1 SAFE, ROSE-L via [`sarpy`](https://github.com/ngageoint/sarpy)), coregistration workflow orchestration, interferogram generation, CMLP/GMLP pipeline assembling. |
-| **Core** | [`cop-ard-core`](https://github.com/ROSE-L-ARD/cop-ard-core) | Low-level SAR numerical kernels: Orbit & geometry computation, image matching, ESD, split-spectrum processing, DEM handling, ionospheric estimation, and warping/resampling (NumPy / SciPy / Numba over Xarray/Dask). |
+| Layer | Repository &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Responsibilities |
+| :--- | :--- | :--- |
+| **Operational** | <nobr>[`cop-ard-processor`](https://github.com/ROSE-L-ARD/cop-ard-processor)</nobr> | EOPF processing units (`ingestion`, `coregistration`, `geocoding`, `reference_dem`, `reference_geometry`, `reference_update`, `cmlp`), preflight validation, system verification tests, and Docker/Dask deployment targets. |
+| **Application** | <nobr>[`cop-ard-app`](https://github.com/ROSE-L-ARD/cop-ard-app)</nobr> | Mission readers (Sentinel-1 SAFE, ROSE-L via [`sarpy`](https://github.com/ngageoint/sarpy)), coregistration workflow orchestration, interferogram generation, CMLP/GMLP pipeline assembling. |
+| **Core** | <nobr>[`cop-ard-core`](https://github.com/ROSE-L-ARD/cop-ard-core)</nobr> | Low-level SAR numerical kernels: Orbit & geometry computation, image matching, ESD, split-spectrum processing, DEM handling, ionospheric estimation, and warping/resampling (NumPy / SciPy / Numba over Xarray/Dask). |
 
 **Dependency flow:** `cop-ard-processor` → `cop-ard-app` → `cop-ard-core`
 
@@ -180,21 +184,12 @@ limitations under the License.
 
 ---
 
+## Consortium & Partners
+
 <div align="center">
-
-#### Prime Contractor & Software Engineering
-[<img src="https://github.com/user-attachments/assets/a562411b-53f9-4f8e-9133-eda0dfd3ba7c" height="36" alt="B-Open"/>](https://bopen.eu)
-
-<br/>
-
-#### Scientific & Consortium Partners
-| [<img src="https://github.com/user-attachments/assets/c8c5b1f6-3c28-44d4-9927-2616c38b266d" height="32" alt="DeltaPhi"/>](https://www.delta-phi.eu/) | [<img src="https://github.com/user-attachments/assets/fa266aa7-909a-4b35-9374-441533e7366a" height="34" alt="University of Alicante"/>](https://www.ua.es/en/) | [<img src="https://github.com/user-attachments/assets/3b50bda1-8726-4602-8be3-f833c0c38dfe" height="28" alt="TU Delft"/>](https://www.tudelft.nl/en/) |
-| :---: | :---: | :---: |
-
-<br/>
-
-#### Institutional Support & Data Providers
-| [<img src="https://github.com/user-attachments/assets/29b559a8-46b8-420e-9638-d66ad5c91cdb" height="42" alt="ESA"/>](https://www.esa.int/) | [<img src="https://github.com/user-attachments/assets/bf303750-ecef-43ed-b28c-661a1e9c80bf" height="42" alt="CONAE"/>](https://www.argentina.gob.ar/conae) | [<img src="https://github.com/user-attachments/assets/876c7892-5d84-4820-9b86-161ea387744d" height="42" alt="ASI"/>](https://www.asi.it/) |
-| :---: | :---: | :---: |
-
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/consortium-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="assets/consortium-light.svg">
+    <img src="assets/consortium-light.svg" alt="Project Partners & Consortium" width="100%" style="max-width: 740px;">
+  </picture>
 </div>
