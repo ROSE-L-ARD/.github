@@ -36,7 +36,7 @@
   // 1. Prime Contractor
   #align(center)[
     #section-title("Prime Contractor & Software Engineering")
-    #logo-tile("../assets/logos/B-Open.png", 30pt, pad-x: 20pt)
+    #logo-tile("../assets/logos/B-Open.svg", 30pt, pad-x: 20pt)
   ]
 
   #v(14pt)

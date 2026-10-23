@@ -26,7 +26,7 @@
   // 1. Prime Contractor
   #align(center)[
     #section-title("Prime Contractor & Software Engineering")
-    #image("../assets/logos/B-Open.png", height: 30pt)
+    #image("../assets/logos/B-Open.svg", height: 30pt)
   ]
 
   #v(14pt)
