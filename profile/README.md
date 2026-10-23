@@ -10,12 +10,12 @@
 [![Funded by ESA](https://img.shields.io/badge/Funded_by-ESA-003247.svg?style=flat-square)](https://www.esa.int/)
 
 <p align="center">
-  <a href="#-processing-workflows">Workflows</a> •
-  <a href="#-repositories">Repositories</a> •
-  <a href="#-products">Products</a> •
-  <a href="#-quickstart">Quickstart</a> •
-  <a href="#-testing--verification">Testing</a> •
-  <a href="#-consortium--contributors">Consortium</a>
+  <a href="#processing-workflows">Workflows</a> •
+  <a href="#repositories">Repositories</a> •
+  <a href="#products">Products</a> •
+  <a href="#quickstart">Quickstart</a> •
+  <a href="#testing-verification">Testing</a> •
+  <a href="#consortium-contributors">Consortium</a>
 </p>
 
 ---
@@ -42,7 +42,7 @@ The processor supports two execution pipelines:
   </picture>
 </p>
 
-* Auxiliary Data Files per unit: `Ingestion` applies the ETAD and ORBIT ADFs (exact timing and precise-orbit corrections), `ReferenceDEM` consumes the DEM ADF, and `Coregistration` optionally takes the IONO ADF for ionospheric correction.
+- **Auxiliary Inputs:** `Ingestion` applies the ETAD and ORBIT ADFs (exact timing and precise-orbit corrections), `ReferenceDEM` consumes the DEM ADF, and `Coregistration` optionally takes the IONO ADF for ionospheric correction. The REFDB serves as the persistent reference database across all execution units.
 
 ---
 
@@ -64,18 +64,34 @@ All packages require **Python 3.13** (`>=3.13, <3.14`) and are managed with [`uv
 
 ## 🔬 Products
 
+### 1. Coregistered Single-Look Complex (CSLC)
+
 Image co-registration aligns multiple acquisitions so each pixel corresponds to the exact same ground target at sub-pixel accuracy.
 
-* Fundamental baseline for multidimensional image stacks and multi-temporal SAR interferometry (PSI, SBAS, DS).
-* Minimizes mission-specific geometric distortions across Sentinel-1, ROSE-L, and NISAR.
-* Mitigates phase errors through integrated Enhanced Spectral Diversity (ESD) and Split-Spectrum ionospheric correction.
+- Fundamental baseline for multidimensional image stacks and multi-temporal SAR interferometry (PSI, SBAS, DS).
+- Minimizes mission-specific geometric distortions across Sentinel-1, ROSE-L, and NISAR.
+- Mitigates phase errors through integrated Enhanced Spectral Diversity (ESD) and Split-Spectrum ionospheric correction.
+
+<p align="center">
+  <img src="assets/naples_iw_mosaic.webp" width="750" alt="Sentinel-1 ARD Interferogram Mosaic - Naples" />
+  <br>
+  <em>Figure 1: Sentinel-1 IW co-registered interferometric mosaic over Naples.</em>
+</p>
+
+### 2. Geocoded Multi-Look Phase (GMLP)
 
 An ARD product optimized for large-scale interferometric monitoring, inspired by intermediate stages in PS/DS and SBAS processing chains before phase unwrapping.
 
-* **Reduced Noise & Footprint:** Multi-looking suppresses speckle/phase noise and dramatically reduces data storage compared to full CSLC stacks.
-* **Vegetation Drift Correction:** Incorporates correction methods to minimize long-term phase drifts caused by vegetative dynamics.
-* **Continuous Ingestion:** Designed to support sequential updates as new acquisitions arrive.
-* **Intermediate CMLP:** Generated first in radar coordinates on a subset of the original SLC grid (**CMLP**), then geocoded to standard map coordinates (**GMLP**).
+- **Reduced Noise & Footprint:** Multi-looking suppresses speckle/phase noise and dramatically reduces data storage compared to full CSLC stacks.
+- **Vegetation Drift Correction:** Incorporates correction methods to minimize long-term phase drifts caused by vegetative dynamics.
+- **Continuous Ingestion:** Designed to support sequential updates as new acquisitions arrive.
+- **Intermediate CMLP:** Generated first in radar coordinates on a subset of the original SLC grid (**CMLP**), then geocoded to standard map coordinates (**GMLP**).
+
+<p align="center">
+  <img src="assets/naples_saocom_gmlp.webp" width="750" alt="SAOCOM-1 ARD GMLP - Naples" />
+  <br>
+  <em>Figure 2: SAOCOM-1 L-band GMLP over Campi Flegrei.</em>
+</p>
 
 ---
 
