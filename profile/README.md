@@ -131,8 +131,8 @@ bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 **[B-Open](https://bopen.eu)** is the project prime contractor, lead software developer, and long-term maintainer of the ROSE-L-ARD processing suite.
 
 * **Federico Minati** ([@effeminati](https://github.com/effeminati)) — *Lead Developer*
-* **Tommaso Carletti** ([@Sbyner](https://github.com/Sbyner))
 * **Alessio Morea** ([@AlessioMorea](https://github.com/AlessioMorea))
+* **Tommaso Carletti** ([@Sbyner](https://github.com/Sbyner))
 * **Francesco Vecchioli** ([@francesco-vecchioli](https://github.com/francesco-vecchioli))
 
 ### Project Partners
