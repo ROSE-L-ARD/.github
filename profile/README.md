@@ -22,59 +22,29 @@
 
 A prototype processing pipeline for generating standardized **Analysis-Ready Data (ARD)** from Copernicus SAR missions (**Sentinel-1** and **ROSE-L**). 
 
-The processor leverages **Xarray** and **Dask** for distributed, cloud-native high-throughput computation, adhering to the European Space Agency’s **EOPF** (Earth Observation Processing Framework) operational architecture.
+The processor leverages **Xarray** and **Dask** for distributed, cloud-native high-throughput computation, adhering to the European Space Agency’s **EOPF** (Earth Observation Platform Framework) operational architecture.
 
 ---
-
-## 🏛️ Consortium & Institutional Backing
-
-Funded by the **European Space Agency (ESA)** under the *Prototype Processor for ARD of Copernicus SAR Missions* project, with L-band SAOCOM data provided by **CONAE** and **ASI**.
-
-<div align="center">
-
-#### Prime Contractor & Software Engineering
-[<img src="https://github.com/user-attachments/assets/a562411b-53f9-4f8e-9133-eda0dfd3ba7c" height="36" alt="B-Open"/>](https://bopen.eu)
-
-<br/>
-
-#### Scientific & Consortium Partners
-| [<img src="https://github.com/user-attachments/assets/c8c5b1f6-3c28-44d4-9927-2616c38b266d" height="32" alt="DeltaPhi"/>](https://www.delta-phi.eu/) | [<img src="https://github.com/user-attachments/assets/fa266aa7-909a-4b35-9374-441533e7366a" height="34" alt="University of Alicante"/>](https://www.ua.es/en/) | [<img src="https://github.com/user-attachments/assets/3b50bda1-8726-4602-8be3-f833c0c38dfe" height="28" alt="TU Delft"/>](https://www.tudelft.nl/en/) |
-| :---: | :---: | :---: |
-
-<br/>
-
-#### Institutional Support & Data Providers
-| [<img src="https://github.com/user-attachments/assets/29b559a8-46b8-420e-9638-d66ad5c91cdb" height="42" alt="ESA"/>](https://www.esa.int/) | [<img src="https://github.com/user-attachments/assets/bf303750-ecef-43ed-b28c-661a1e9c80bf" height="42" alt="CONAE"/>](https://www.argentina.gob.ar/conae) | [<img src="https://github.com/user-attachments/assets/876c7892-5d84-4820-9b86-161ea387744d" height="42" alt="ASI"/>](https://www.asi.it/) |
-| :---: | :---: | :---: |
-
-</div>
-
----
-
-
 
 ## 🔄 Processing Workflows
 
-The processor supports two execution pipelines depending on downstream analytical requirements:
+The processor supports two execution pipelines:
 
 
 1. **CSLC Pipeline (Coregistration Only):** Aligns images at sub-pixel accuracy to a reference geometry. The workflow completes directly after co-registration, providing full-resolution complex stacks optimized for phase-sensitive techniques (PSI, SBAS, DS).
 2. **GMLP Pipeline (Coregistration + Multi-looking + Geocoding):** Ingests the co-registered data, compresses phase noise and volume via multi-looking into an intermediate radar-coordinate **CMLP** product, mitigates phase drifts, and geocodes the result into ready-to-use **GMLP**.
 
 <p align="center">
-  <img src="./assets/processing_workflows.svg" alt="COP-ARD Processing Workflows DAG" width="700">
+  <img src="./assets/processing_workflows.svg" alt="COP-ARD Processing Workflows" width="700">
 </p>
 
-* Auxiliary Data Files plug into the DAG per unit: `Ingestion` applies the ETAD and ORBIT ADFs (exact timing and precise-orbit corrections), `ReferenceDEM` consumes the DEM ADF, and `Coregistration` optionally takes the IONO ADF for ionospheric correction.
-
-* Every unit call passes through the layer-1 `preflight()` engine (violations raised as `PreflightError` with the full list) and runs under a `resumable_breakpoint()` decorator (`breakpoints__activate_all` config switch), so an interrupted chain resumes per-unit.
-* `ReferenceUpdate` keeps the dynamic REFDB current after CSLC-only chains; after multi-looking, `CMLP` itself returns `current_reference` / `stable_references` and persists the updates.
+* Auxiliary Data Files per unit: `Ingestion` applies the ETAD and ORBIT ADFs (exact timing and precise-orbit corrections), `ReferenceDEM` consumes the DEM ADF, and `Coregistration` optionally takes the IONO ADF for ionospheric correction.
 
 ---
 
 ## 📦 Repositories
 
-The system is organized into three layered Python packages:
+The system is organized into three Python packages:
 
 | Layer | Repository | Responsibilities |
 | --- | --- | --- |
@@ -148,13 +118,13 @@ bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 ## 🛠️ Development & Deployment
 
 * **Code Standards:** `make all` formats and runs `make check` (`ruff` lint, `bandit` security, `xenon` complexity, `mypy` typing).
-* **Documentation:** `make docs` renders CSLC, ESD, and geolocation qualification Quarto notebooks into `docs/`.
+* **Documentation:** `make html` renders `CSLC` and `GMLP` qualification Quarto notebooks into `docs/`.
 * **Lockfile Management:** Refresh individual dependencies using `uv lock -P <package>` followed by `uv sync --extra tests`.
 * **Containerization:** The included `Dockerfile` uses a multi-stage layout (a `uv` build phase + minimal `python:3.13-slim` runtime image containing the pinned environment and EGM2008 geoid assets).
 
 ---
 
-## 👥 Consortium & Contributors
+## 🏛️ Consortium & Contributors
 
 ### Prime Contractor & Software Engineering
 
@@ -174,11 +144,12 @@ bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 
 ---
 
-## 🏛️ Institutional Backing & Data Access
+## Acknowledgements
+
+We gratefully acknowledge the support of the following organizations:
 
 * **European Space Agency (ESA):** Funded under the *Prototype Processor for ARD of Copernicus SAR Missions* project.
 * **CONAE & ASI:** Provided L-band SAOCOM SAR data used during prototype development, analysis, and validation activities.
-* **Project Maintenance & Commercial Support:** Maintained long-term by [B-Open](https://bopen.eu). Sponsorships and commercial support inquiries are welcome.
 
 ---
 
@@ -208,3 +179,22 @@ limitations under the License.
 ```
 
 ---
+
+<div align="center">
+
+#### Prime Contractor & Software Engineering
+[<img src="https://github.com/user-attachments/assets/a562411b-53f9-4f8e-9133-eda0dfd3ba7c" height="36" alt="B-Open"/>](https://bopen.eu)
+
+<br/>
+
+#### Scientific & Consortium Partners
+| [<img src="https://github.com/user-attachments/assets/c8c5b1f6-3c28-44d4-9927-2616c38b266d" height="32" alt="DeltaPhi"/>](https://www.delta-phi.eu/) | [<img src="https://github.com/user-attachments/assets/fa266aa7-909a-4b35-9374-441533e7366a" height="34" alt="University of Alicante"/>](https://www.ua.es/en/) | [<img src="https://github.com/user-attachments/assets/3b50bda1-8726-4602-8be3-f833c0c38dfe" height="28" alt="TU Delft"/>](https://www.tudelft.nl/en/) |
+| :---: | :---: | :---: |
+
+<br/>
+
+#### Institutional Support & Data Providers
+| [<img src="https://github.com/user-attachments/assets/29b559a8-46b8-420e-9638-d66ad5c91cdb" height="42" alt="ESA"/>](https://www.esa.int/) | [<img src="https://github.com/user-attachments/assets/bf303750-ecef-43ed-b28c-661a1e9c80bf" height="42" alt="CONAE"/>](https://www.argentina.gob.ar/conae) | [<img src="https://github.com/user-attachments/assets/876c7892-5d84-4820-9b86-161ea387744d" height="42" alt="ASI"/>](https://www.asi.it/) |
+| :---: | :---: | :---: |
+
+</div>
