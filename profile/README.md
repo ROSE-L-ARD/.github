@@ -73,9 +73,9 @@ Image co-registration aligns multiple acquisitions so each pixel corresponds to 
 - Mitigates phase errors through integrated Enhanced Spectral Diversity (ESD) and Split-Spectrum ionospheric correction.
 
 <p align="center">
-  <img src="assets/naples_iw_mosaic.webp" width="750" alt="Sentinel-1 ARD Interferogram Mosaic - Naples" />
+  <img src="assets/mojave_iw.webp" width="750" alt="Sentinel-1 ARD Interferogram Mosaic - Mojave Desert" />
   <br>
-  <em>Figure 1: Sentinel-1 IW co-registered interferometric mosaic over Naples.</em>
+  <em>Figure 1: Sentinel-1 IW co-registered interferometric mosaic over Mojave Desert.</em>
 </p>
 
 ### 2. Geocoded Multi-Look Phase (GMLP)
