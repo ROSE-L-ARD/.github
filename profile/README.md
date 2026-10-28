@@ -147,7 +147,7 @@ bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 ## 🛠️ Development & Deployment
 
 * **Code Standards:** `make all` formats and runs `make check` (`ruff` lint, `bandit` security, `xenon` complexity, `mypy` typing).
-* **Documentation:** `make html` renders `CSLC` and `GMLP` qualification Quarto notebooks into `docs/`.
+* **Documentation:** `make html` renders the full validation-report book (CSLC, CSLC-ESD, geolocation, third-party comparison, RIWS, and the GMLP validations) into `docs/` as the *Preliminary Product Validation Report*; `make pdf` compiles the same book to Typst/PDF.
 * **Lockfile Management:** Refresh individual dependencies using `uv lock -P <package>` followed by `uv sync --extra tests`.
 * **Containerization:** The included `Dockerfile` uses a multi-stage layout (a `uv` build phase + minimal `python:3.13-slim` runtime image containing the pinned environment and EGM2008 geoid assets).
 
