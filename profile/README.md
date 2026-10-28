@@ -105,7 +105,16 @@ cd cop-ard-processor
 make install
 ```
 
-`make install` is the **only supported installation path**. It downloads the **EGM2008 geoid grid** required for geoid-corrected vertical datums (`PROJ` / `pyproj`) and builds the local virtual environment. Running `uv sync` alone will bypass grid setup, causing geoid-dependent processing to fail at runtime.
+`make install` is the recommended installation path for local development. It creates the virtual environment with `uv sync` and automatically downloads the default **EGM2008 geoid grid** (`us_nga_egm08_25.tif`) into the standard PROJ user directory (`~/.local/share/proj`).
+
+> **Note on direct `pip` / `uv sync` installs:**
+> Dask workers enforce a strictly offline environment (`pyproj.network.set_network_enabled(False)`). If you install via PyPI or run `uv sync` directly without `make install`, geoid grids will not be downloaded automatically, causing vertical CRS transformations (e.g., Copernicus DEM / EGM2008) to fail at runtime.
+>
+> In that case, provision the grid manually before running processors:
+> ```bash
+> python -c "from cop_ard_app.utils import download_geoid_grid; download_geoid_grid()"
+> ```
+> *(Or point to an existing folder with `export PROJ_USER_WRITABLE_DIRECTORY=/path/to/grids`)*
 
 ---
 
