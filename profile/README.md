@@ -10,11 +10,11 @@
 [![Funded by ESA](https://img.shields.io/badge/Funded_by-ESA-003247.svg?style=flat-square)](https://www.esa.int/)
 
 <p align="center">
-  <a href="#processing-workflows">Workflows</a> •
-  <a href="#repositories">Repositories</a> •
-  <a href="#products">Products</a> •
-  <a href="#quickstart">Quickstart</a> •
-  <a href="#testing-verification">Testing</a> •
+  <a href="#-processing-workflows">Workflows</a> •
+  <a href="#-repositories">Repositories</a> •
+  <a href="#-products">Products</a> •
+  <a href="#-quickstart">Quickstart</a> •
+  <a href="#-testing--verification">Testing</a> •
   <a href="#consortium-contributors">Consortium</a>
 </p>
 
@@ -153,6 +153,7 @@ bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 
 ---
 
+<a id="consortium-contributors"></a>
 ## 🏛️ Consortium & Contributors
 
 ### Prime Contractor & Software Engineering
