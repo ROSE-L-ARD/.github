@@ -161,13 +161,17 @@ bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 
 * **Federico Minati** ([@effeminati](https://github.com/effeminati)) — *Lead Developer*
 * **Alessio Morea** ([@AlessioMorea](https://github.com/AlessioMorea))
-* **Tommaso Carletti** ([@Sbyner](https://github.com/Sbyner))
 * **Francesco Vecchioli** ([@francesco-vecchioli](https://github.com/francesco-vecchioli))
+* **Tommaso Carletti** ([@Sbyner](https://github.com/Sbyner))
+* **Carmine Frascella** ([@CarmineFrascella](https://github.com/CarmineFrascella))
+* **Francesco Trillo** ([@trillesco](https://github.com/trillesco))
+* **Mario Costantini**
 
 ### Project Partners
 
 * **Francesco DeZan** ([@fdz-insar](https://github.com/fdz-insar)) — [DeltaPhi](https://www.delta-phi.eu/)
 * **Juan M. Lopez-Sanchez** ([@juanma-lopez](https://github.com/juanma-lopez)) — [University of Alicante](https://www.ua.es/en/)
+* **Victor Cazcarra Bes** - [University of Alicante](https://www.ua.es/en/)
 * **Paco López-Dekker** ([@pakodekker](https://github.com/pakodekker)) — [TU Delft](https://www.tudelft.nl/en/)
 * **Yan Yuan** ([@Yan-518](https://github.com/Yan-518)) — [TU Delft](https://www.tudelft.nl/en/)
 
