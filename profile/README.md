@@ -170,7 +170,7 @@ bash scripts/run_tests.sh TC-ST-FUNC-009 --skip-reference
 
 ### Project Partners
 
-* **Francesco DeZan** ([@fdz-insar](https://github.com/fdz-insar)) — [DeltaPhi](https://www.delta-phi.eu/)
+* **Francesco De Zan** ([@fdz-insar](https://github.com/fdz-insar)) — [DeltaPhi](https://www.delta-phi.eu/)
 * **Juan M. Lopez-Sanchez** ([@juanma-lopez](https://github.com/juanma-lopez)) — [University of Alicante](https://www.ua.es/en/)
 * **Victor Cazcarra Bes** - [University of Alicante](https://www.ua.es/en/)
 * **Paco López-Dekker** ([@pakodekker](https://github.com/pakodekker)) — [TU Delft](https://www.tudelft.nl/en/)
